@@ -37,15 +37,12 @@ function manejarOperador(siguienteOperador) {
         calculadora.primerOperando = valorEntrada;
     } else if (operador) {
         const resultado = operar(primerOperando, valorEntrada, operador);
-
         calculadora.valorPantalla = `${parseFloat(resultado.toFixed(7))}`;
         calculadora.primerOperando = resultado;
     }
 
     calculadora.esperandoSegundoOperando = true;
     calculadora.operador = siguienteOperador;
-
-
 }
 
 function operar(primerOperando, segundoOperando, operador) {
@@ -57,9 +54,8 @@ function operar(primerOperando, segundoOperando, operador) {
         return primerOperando * segundoOperando;
     } else if (operador === '/') {
         return primerOperando / segundoOperando;
-    }else if (operador === '=') {
-         return segundoOperando;
     }
+    return segundoOperando;
 }
 
 function reiniciarCalculadora() {
@@ -97,6 +93,18 @@ teclas.addEventListener('click', (evento) => {
 
     if (target.classList.contains('reiniciar')) {
         reiniciarCalculadora();
+        actualizarPantalla();
+        return;
+    }
+
+    if (target.classList.contains('igual')) {
+        if (calculadora.operador && calculadora.primerOperando !== null) {
+            const resultado = operar(calculadora.primerOperando, parseFloat(calculadora.valorPantalla), calculadora.operador);
+            calculadora.valorPantalla = `${parseFloat(resultado.toFixed(7))}`;
+            calculadora.primerOperando = resultado;
+            calculadora.operador = null;
+            calculadora.esperandoSegundoOperando = false;
+        }
         actualizarPantalla();
         return;
     }
